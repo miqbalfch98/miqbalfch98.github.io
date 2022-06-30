@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet-src.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/kecamatan2020_1.js"></script>
+        <script src="data/wisatapoint2020_2.js"></script>
+        <script src="data/kecamatan2019_3.js"></script>
+        <script src="data/wisatapoint2019_4.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:2
+        }).fitBounds([[-6.97512731213,109.585440408],[-6.95778948184,109.618326755]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        L.control.locate().addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        var basemap0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        function setBounds() {
+        }
+        var overlay_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            opacity: 1.0
+        });
+        overlay_OSMStandard_0.addTo(map);
+        map.addLayer(overlay_OSMStandard_0);
+        function pop_kecamatan2020_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? Autolinker.link(String(feature.properties['Kecamatan'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pariwisata</th>\
+                        <td>' + (feature.properties['Pariwisata'] !== null ? Autolinker.link(String(feature.properties['Pariwisata'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Jml Pgnjg</th>\
+                        <td>' + (feature.properties['Jml Pgnjg'] !== null ? Autolinker.link(String(feature.properties['Jml Pgnjg'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_kecamatan2020_1_0(feature) {
+            if (feature.properties['Jml Pgnjg'] >= 0.000000 && feature.properties['Jml Pgnjg'] <= 25200.000000 ) {
+                return {
+                pane: 'pane_kecamatan2020_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,251,255,1.0)',
+            }
+            }
+            if (feature.properties['Jml Pgnjg'] >= 25200.000000 && feature.properties['Jml Pgnjg'] <= 50400.000000 ) {
+                return {
+                pane: 'pane_kecamatan2020_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,179,216,1.0)',
+            }
+            }
+            if (feature.properties['Jml Pgnjg'] >= 50400.000000 && feature.properties['Jml Pgnjg'] <= 75600.000000 ) {
+                return {
+                pane: 'pane_kecamatan2020_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,48,107,1.0)',
+            }
+            }
+        }
+        map.createPane('pane_kecamatan2020_1');
+        map.getPane('pane_kecamatan2020_1').style.zIndex = 401;
+        map.getPane('pane_kecamatan2020_1').style['mix-blend-mode'] = 'normal';
+        var layer_kecamatan2020_1 = new L.geoJson(json_kecamatan2020_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_kecamatan2020_1',
+            onEachFeature: pop_kecamatan2020_1,
+            style: style_kecamatan2020_1_0,
+        });
+        bounds_group.addLayer(layer_kecamatan2020_1);
+        map.addLayer(layer_kecamatan2020_1);
+        function pop_wisatapoint2020_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? Autolinker.link(String(feature.properties['id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">wisata</th>\
+                        <td>' + (feature.properties['wisata'] !== null ? Autolinker.link(String(feature.properties['wisata'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">jml pgnjg</th>\
+                        <td>' + (feature.properties['jml pgnjg'] !== null ? Autolinker.link(String(feature.properties['jml pgnjg'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">alamat</th>\
+                        <td>' + (feature.properties['alamat'] !== null ? Autolinker.link(String(feature.properties['alamat'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_wisatapoint2020_2_0() {
+            return {
+                pane: 'pane_wisatapoint2020_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(53,17,199,1.0)',
+            }
+        }
+        map.createPane('pane_wisatapoint2020_2');
+        map.getPane('pane_wisatapoint2020_2').style.zIndex = 402;
+        map.getPane('pane_wisatapoint2020_2').style['mix-blend-mode'] = 'normal';
+        var layer_wisatapoint2020_2 = new L.geoJson(json_wisatapoint2020_2, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_wisatapoint2020_2',
+            onEachFeature: pop_wisatapoint2020_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_wisatapoint2020_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_wisatapoint2020_2);
+        map.addLayer(layer_wisatapoint2020_2);
+        function pop_kecamatan2019_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? Autolinker.link(String(feature.properties['Kecamatan'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pariwisata</th>\
+                        <td>' + (feature.properties['Pariwisata'] !== null ? Autolinker.link(String(feature.properties['Pariwisata'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Jml Pgnjg</th>\
+                        <td>' + (feature.properties['Jml Pgnjg'] !== null ? Autolinker.link(String(feature.properties['Jml Pgnjg'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_kecamatan2019_3_0(feature) {
+            if (feature.properties['Jml Pgnjg'] >= 0.000000 && feature.properties['Jml Pgnjg'] <= 160666.666667 ) {
+                return {
+                pane: 'pane_kecamatan2019_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(29,180,255,1.0)',
+            }
+            }
+            if (feature.properties['Jml Pgnjg'] >= 160666.666667 && feature.properties['Jml Pgnjg'] <= 321333.333333 ) {
+                return {
+                pane: 'pane_kecamatan2019_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,179,216,1.0)',
+            }
+            }
+            if (feature.properties['Jml Pgnjg'] >= 321333.333333 && feature.properties['Jml Pgnjg'] <= 482000.000000 ) {
+                return {
+                pane: 'pane_kecamatan2019_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,48,107,1.0)',
+            }
+            }
+        }
+        map.createPane('pane_kecamatan2019_3');
+        map.getPane('pane_kecamatan2019_3').style.zIndex = 403;
+        map.getPane('pane_kecamatan2019_3').style['mix-blend-mode'] = 'normal';
+        var layer_kecamatan2019_3 = new L.geoJson(json_kecamatan2019_3, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_kecamatan2019_3',
+            onEachFeature: pop_kecamatan2019_3,
+            style: style_kecamatan2019_3_0,
+        });
+        bounds_group.addLayer(layer_kecamatan2019_3);
+        map.addLayer(layer_kecamatan2019_3);
+        function pop_wisatapoint2019_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? Autolinker.link(String(feature.properties['id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">wisata</th>\
+                        <td>' + (feature.properties['wisata'] !== null ? Autolinker.link(String(feature.properties['wisata'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">jml pgnjg</th>\
+                        <td>' + (feature.properties['jml pgnjg'] !== null ? Autolinker.link(String(feature.properties['jml pgnjg'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Alamat</th>\
+                        <td>' + (feature.properties['Alamat'] !== null ? Autolinker.link(String(feature.properties['Alamat'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_wisatapoint2019_4_0() {
+            return {
+                pane: 'pane_wisatapoint2019_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,106,106,1.0)',
+            }
+        }
+        map.createPane('pane_wisatapoint2019_4');
+        map.getPane('pane_wisatapoint2019_4').style.zIndex = 404;
+        map.getPane('pane_wisatapoint2019_4').style['mix-blend-mode'] = 'normal';
+        var layer_wisatapoint2019_4 = new L.geoJson(json_wisatapoint2019_4, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_wisatapoint2019_4',
+            onEachFeature: pop_wisatapoint2019_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_wisatapoint2019_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_wisatapoint2019_4);
+        map.addLayer(layer_wisatapoint2019_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/wisatapoint2019_4.png" /> wisatapoint2019': layer_wisatapoint2019_4,'kecamatan2019<br /><table><tr><td style="text-align: center;"><img src="legend/kecamatan2019_3_Sedikit0.png" /></td><td>Sedikit</td></tr><tr><td style="text-align: center;"><img src="legend/kecamatan2019_3_Sedang1.png" /></td><td>Sedang</td></tr><tr><td style="text-align: center;"><img src="legend/kecamatan2019_3_Banyak2.png" /></td><td>Banyak</td></tr></table>': layer_kecamatan2019_3,'<img src="legend/wisatapoint2020_2.png" /> wisatapoint2020': layer_wisatapoint2020_2,'kecamatan 2020<br /><table><tr><td style="text-align: center;"><img src="legend/kecamatan2020_1_Sedikit0.png" /></td><td>Sedikit</td></tr><tr><td style="text-align: center;"><img src="legend/kecamatan2020_1_Sedang1.png" /></td><td>Sedang</td></tr><tr><td style="text-align: center;"><img src="legend/kecamatan2020_1_Banyak2.png" /></td><td>Banyak</td></tr></table>': layer_kecamatan2020_1,"OSM Standard": overlay_OSMStandard_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_kecamatan2020_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Kecamatan'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['Kecamatan']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_kecamatan2020_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_kecamatan2020_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_kecamatan2020_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_kecamatan2020_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_kecamatan2020_1]);
+        });
+        </script>
+    </body>
+</html>
